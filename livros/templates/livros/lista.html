@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seu Acervo — The Literary Cafe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        .font-serif-cozy { font-family: 'Fraunces', serif; }
+        .font-sans-cozy { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #FBF7F0; color: #2C1810; }
+    </style>
+</head>
+<body class="font-sans-cozy min-h-screen flex">
+
+    <aside class="w-64 bg-[#F4EFE6] border-r border-[#E6DEC9] p-6 flex flex-col justify-between hidden md:flex shrink-0">
+        <div>
+            <div class="flex items-center gap-3 mb-8">
+                <span class="text-2xl">☕</span>
+                <h1 class="font-serif-cozy text-xl font-semibold tracking-wide text-[#2C1810]">Literary Cafe</h1>
+            </div>
+
+            <nav class="space-y-1 mb-6 border-b border-[#E6DEC9]/60 pb-4">
+                <a href="{% url 'home' %}" class="flex items-center gap-3 px-3 py-2 hover:bg-[#EADCC2]/50 rounded-lg text-[#2C1810]/80 hover:text-[#2C1810] transition-all text-sm">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="{% url 'criar_livro' %}" class="flex items-center gap-3 px-3 py-2 hover:bg-[#EADCC2]/50 rounded-lg text-[#2C1810]/80 hover:text-[#2C1810] transition-all text-sm">
+                    <span>✨</span> Cadastrar Livro
+                </a>
+            </nav>
+
+            <div>
+                <h2 class="text-[11px] font-bold uppercase tracking-wider text-[#2C1810]/40 px-3 mb-2">Sua Estante</h2>
+                <nav class="space-y-1 text-sm">
+                    <a href="{% url 'lista_livros' %}" class="flex items-center justify-between px-3 py-1.5 rounded-lg transition-all {% if not category_filtrada %}bg-[#EADCC2] text-[#2C1810] font-medium{% else %}text-[#2C1810]/70 hover:bg-[#EADCC2]/30{% endif %}">
+                        <span class="flex items-center gap-2"><span>📖</span> Todos</span>
+                        <span class="text-xs bg-[#2C1810]/5 px-2 py-0.5 rounded-md text-[#2C1810]/60">{{ contagem.TOTAL }}</span>
+                    </a>
+
+                    <a href="{% url 'lista_livros' %}?cat=FICCAO" class="flex items-center justify-between px-3 py-1.5 rounded-lg transition-all {% if category_filtrada == 'FICCAO' %}bg-[#EADCC2] text-[#2C1810] font-medium{% else %}text-[#2C1810]/70 hover:bg-[#EADCC2]/30{% endif %}">
+                        <span class="flex items-center gap-2"><span>🔮</span> Ficção</span>
+                        <span class="text-xs bg-[#2C1810]/5 px-2 py-0.5 rounded-md text-[#2C1810]/60">{{ contagem.FICCAO }}</span>
+                    </a>
+
+                    <a href="{% url 'lista_livros' %}?cat=ROMANCE" class="flex items-center justify-between px-3 py-1.5 rounded-lg transition-all {% if category_filtrada == 'ROMANCE' %}bg-[#EADCC2] text-[#2C1810] font-medium{% else %}text-[#2C1810]/70 hover:bg-[#EADCC2]/30{% endif %}">
+                        <span class="flex items-center gap-2"><span>🌸</span> Romance</span>
+                        <span class="text-xs bg-[#2C1810]/5 px-2 py-0.5 rounded-md text-[#2C1810]/60">{{ contagem.ROMANCE }}</span>
+                    </a>
+
+                    <a href="{% url 'lista_livros' %}?cat=TECNICO" class="flex items-center justify-between px-3 py-1.5 rounded-lg transition-all {% if category_filtrada == 'TECNICO' %}bg-[#EADCC2] text-[#2C1810] font-medium{% else %}text-[#2C1810]/70 hover:bg-[#EADCC2]/30{% endif %}">
+                        <span class="flex items-center gap-2"><span>💻</span> Técnico</span>
+                        <span class="text-xs bg-[#2C1810]/5 px-2 py-0.5 rounded-md text-[#2C1810]/60">{{ contagem.TECNICO }}</span>
+                    </a>
+
+                    <a href="{% url 'lista_livros' %}?cat=BIOGRAFIA" class="flex items-center justify-between px-3 py-1.5 rounded-lg transition-all {% if category_filtrada == 'BIOGRAFIA' %}bg-[#EADCC2] text-[#2C1810] font-medium{% else %}text-[#2C1810]/70 hover:bg-[#EADCC2]/30{% endif %}">
+                        <span class="flex items-center gap-2"><span>📜</span> Biografia</span>
+                        <span class="text-xs bg-[#2C1810]/5 px-2 py-0.5 rounded-md text-[#2C1810]/60">{{ contagem.BIOGRAFIA }}</span>
+                    </a>
+
+                    <a href="{% url 'lista_livros' %}?cat=OUTROS" class="flex items-center justify-between px-3 py-1.5 rounded-lg transition-all {% if category_filtrada == 'OUTROS' %}bg-[#EADCC2] text-[#2C1810] font-medium{% else %}text-[#2C1810]/70 hover:bg-[#EADCC2]/30{% endif %}">
+                        <span class="flex items-center gap-2"><span>📚</span> Outros</span>
+                        <span class="text-xs bg-[#2C1810]/5 px-2 py-0.5 rounded-md text-[#2C1810]/60">{{ contagem.OUTROS }}</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="text-xs text-[#2C1810]/50 border-t border-[#E6DEC9] pt-4">
+            <p>Design & Dev de Portfólio</p>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-6 md:p-12 max-w-6xl mx-auto w-full">
+        
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-[#E6DEC9] pb-6 mb-8 gap-4">
+            <div>
+                <h1 class="font-serif-cozy text-3xl font-bold text-[#2C1810]">Meu Acervo Literário</h1>
+                <p class="text-[#2C1810]/60 text-sm mt-1">Explore, edite e gerencie os livros guardados na sua estante virtual.</p>
+            </div>
+            
+            <a href="{% url 'criar_livro' %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#6F4E37] text-white font-medium rounded-xl shadow-sm hover:bg-[#2C1810] active:scale-[0.98] transition-all text-sm shrink-0">
+                <span>➕</span> Adicionar Livro
+            </a>
+        </header>
+
+        <section class="mb-8">
+            <form method="GET" action="{% url 'lista_livros' %}" class="flex gap-3 max-w-2xl">
+                <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sm">
+                        🔍
+                    </span>
+                    <input type="text" 
+                           name="busca" 
+                           value="{{ termo_busca }}"
+                           placeholder="Buscar por título ou autor do livro..." 
+                           class="w-full pl-10 pr-4 py-3 bg-[#FDFBF7] border border-[#E6DEC9] rounded-xl text-sm text-[#2C1810] placeholder-[#2C1810]/40 focus:outline-none focus:border-[#A0785A] transition-all">
+                </div>
+                
+                <button type="submit" 
+                        class="px-5 py-3 bg-[#6F4E37] text-white text-sm font-medium rounded-xl hover:bg-[#2C1810] transition-all shrink-0">
+                    Filtrar
+                </button>
+
+                {% if termo_busca %}
+                <a href="{% url 'lista_livros' %}" 
+                   class="px-4 py-3 bg-[#F4EFE6] border border-[#E6DEC9] text-[#2C1810]/70 hover:text-[#2C1810] text-sm font-medium rounded-xl transition-all flex items-center justify-center" 
+                   title="Limpar busca">
+                    ✕
+                </a>
+                {% endif %}
+            </form>
+        </section>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {% for livro in livros %}
+            <div class="bg-[#FDFBF7] border border-[#E6DEC9] rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between transition-all hover:shadow-md hover:-translate-y-1 group">
+                
+                <div>
+                    <div class="h-40 bg-gradient-to-br from-[#EADCC2] to-[#D4A574]/40 p-4 flex flex-col justify-between relative overflow-hidden">
+                        <span class="text-3xl opacity-80 group-hover:scale-110 transition-transform duration-300">📖</span>
+                        <div class="absolute right-[-20px] bottom-[-20px] w-24 h-24 bg-[#2C1810]/5 rounded-full blur-xl"></div>
+                        
+                        <div class="absolute top-4 right-4">
+                            {% if livro.disponivel %}
+                            <span class="text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/50 px-2 py-0.5 rounded-full uppercase tracking-wider">Disponível</span>
+                            {% else %}
+                            <span class="text-[10px] font-semibold bg-[#A0785A]/10 text-[#A0785A] border border-[#A0785A]/25 px-2 py-0.5 rounded-full uppercase tracking-wider">Leitura Ativa</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="p-5">
+                        <div class="mb-2.5 flex flex-wrap gap-1">
+                            {% if livro.categoria == 'FICCAO' %}
+                                <span class="text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200/60 px-2 py-0.5 rounded-md uppercase tracking-wider">🔮 Ficção</span>
+                            {% elif livro.categoria == 'ROMANCE' %}
+                                <span class="text-[10px] font-medium bg-rose-50 text-rose-700 border border-rose-200/60 px-2 py-0.5 rounded-md uppercase tracking-wider">🌸 Romance</span>
+                            {% elif livro.categoria == 'TECNICO' %}
+                                <span class="text-[10px] font-medium bg-sky-50 text-sky-700 border border-sky-200/60 px-2 py-0.5 rounded-md uppercase tracking-wider">💻 Técnico</span>
+                            {% elif livro.categoria == 'BIOGRAFIA' %}
+                                <span class="text-[10px] font-medium bg-amber-50 text-amber-800 border border-amber-200/60 px-2 py-0.5 rounded-md uppercase tracking-wider">📜 Biografia</span>
+                            {% else %}
+                                <span class="text-[10px] font-medium bg-[#F4EFE6] text-[#2C1810]/60 border border-[#E6DEC9] px-2 py-0.5 rounded-md uppercase tracking-wider">📚 Outros</span>
+                            {% endif %}
+                        </div>
+
+                        <h3 class="font-serif-cozy text-lg font-bold text-[#2C1810] leading-snug group-hover:text-[#6F4E37] transition-colors line-clamp-1">
+                            {{ livro.titulo }}
+                        </h3>
+                        
+                        <p class="text-sm text-[#2C1810]/70 mt-1 flex items-center gap-1">
+                            <span>🖋️</span> {{ livro.autor }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="px-5 pb-5 pt-2 border-t border-[#E6DEC9]/40 flex gap-3">
+                    <a href="{% url 'editar_livro' livro.pk %}" class="flex-1 text-center py-2 bg-transparent hover:bg-[#F4EFE6] border border-[#E6DEC9] text-[#2C1810]/80 hover:text-[#2C1810] font-medium rounded-xl text-xs transition-all flex items-center justify-center gap-1">
+                        <span>✏️</span> Editar
+                    </a>
+                    
+                    <a href="{% url 'excluir_livro' livro.pk %}" class="flex-1 text-center py-2 bg-transparent hover:bg-red-50 hover:text-red-700 border border-transparent hover:border-red-200 text-[#2C1810]/50 font-medium rounded-xl text-xs transition-all flex items-center justify-center gap-1">
+                        <span>🗑️</span> Remover
+                    </a>
+                </div>
+
+            </div>
+            {% empty %}
+            
+            <div class="col-span-full bg-[#FDFBF7] border border-dashed border-[#E6DEC9] rounded-2xl p-12 text-center my-4">
+                <span class="text-5xl block mb-4">📭</span>
+                <h3 class="font-serif-cozy text-xl font-bold text-[#2C1810] mb-2">Nenhum resultado encontrado</h3>
+                <p class="text-sm text-[#2C1810]/60 max-w-sm mx-auto mb-6">
+                    {% if termo_busca %}
+                        Não encontramos nenhuma obra combinando com "{{ termo_busca }}". Verifique a grafia ou limpe o filtro.
+                    {% else %}
+                        Parece que você ainda não catalogou nenhuma obra no Literary Cafe. Vamos começar a montar seu acervo?
+                    {% endif %}
+                </p>
+                
+                {% if termo_busca %}
+                <a href="{% url 'lista_livros' %}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#F4EFE6] border border-[#E6DEC9] text-[#2C1810] font-medium rounded-xl hover:bg-[#EADCC2]/50 transition-all text-sm">
+                    ✕ Limpar Busca e Voltar
+                </a>
+                {% else %}
+                <a href="{% url 'criar_livro' %}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#F5DEB3] border border-[#D4A574] text-[#2C1810] font-medium rounded-xl hover:bg-[#D4A574]/30 transition-all text-sm">
+                    ✨ Cadastrar Meu Primeiro Livro
+                </a>
+                {% endif %}
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+</body>
+</html>

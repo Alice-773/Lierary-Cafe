@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login • Literary Café</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        .font-serif-cozy {
+            font-family: 'Fraunces', serif;
+        }
+
+        .font-sans-cozy {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: #FBF7F0;
+            color: #2C1810;
+        }
+    </style>
+</head>
+
+<body class="font-sans-cozy min-h-screen">
+
+    <div class="min-h-screen flex">
+
+        <!-- Lado esquerdo -->
+        <div class="hidden lg:flex w-1/2 items-center justify-center p-16">
+
+            <div class="max-w-lg">
+
+                <div class="text-6xl mb-6">
+                    ☕
+                </div>
+
+                <h1 class="font-serif-cozy text-7xl font-bold leading-tight text-[#2C1810]">
+                    Literary
+                    <br>
+                    Café
+                </h1>
+
+                <p class="mt-8 text-2xl text-[#6F4E37] leading-relaxed">
+                    Organize seu universo literário,
+                    acompanhe seu acervo e transforme
+                    sua coleção em uma experiência elegante.
+                </p>
+
+                <div class="mt-16 border-l-4 border-[#D4A574] pl-6">
+                    <p class="italic text-[#6F4E37] text-lg">
+                        "Toda grande leitura começa com uma página."
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Lado direito -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+
+            <div class="w-full max-w-md bg-white rounded-3xl border border-[#E6DEC9] shadow-sm p-10">
+
+                <div class="text-center mb-10">
+
+                    <div class="text-4xl mb-4">
+                        📚
+                    </div>
+
+                    <h2 class="font-serif-cozy text-4xl font-bold text-[#2C1810]">
+                        Bem-vinda
+                    </h2>
+
+                    <p class="mt-3 text-[#6F4E37]">
+                        Faça login para acessar sua biblioteca.
+                    </p>
+
+                </div>
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    <div class="space-y-6">
+
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-[#6F4E37]">
+                                Usuário
+                            </label>
+
+                            <input
+                                type="text"
+                                name="username"
+                                required
+                                class="w-full rounded-xl border border-[#D9CCB2] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#A0785A]"
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-[#6F4E37]">
+                                Senha
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                required
+                                class="w-full rounded-xl border border-[#D9CCB2] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#A0785A]"
+                            >
+                        </div>
+
+                        {% if form.errors %}
+                        <div class="bg-red-50 border border-red-200 text-red-600 rounded-xl p-3 text-sm">
+                            Usuário ou senha inválidos.
+                        </div>
+                        {% endif %}
+
+                        <button
+                            type="submit"
+                            class="w-full bg-[#6F4E37] text-white py-3 rounded-xl font-medium hover:bg-[#5A3F2B] transition"
+                        >
+                            Entrar na Biblioteca
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <div class="mt-8 text-center text-sm text-[#A0785A]">
+                    Literary Café • Biblioteca Digital
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

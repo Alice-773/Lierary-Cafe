@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Digital — The Literary Cafe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        .font-serif-cozy { font-family: 'Fraunces', serif; }
+        .font-sans-cozy { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #FBF7F0; color: #2C1810; }
+        .text-espresso { color: #2C1810; }
+    </style>
+</head>
+<body class="font-sans-cozy min-h-screen flex">
+
+    
+   <aside class="w-64 bg-[#F4EFE6] border-r border-[#E6DEC9] p-6 flex flex-col justify-between hidden md:flex shrink-0">
+
+    <div>
+
+        <div class="flex items-center gap-3 mb-8">
+            <span class="text-2xl">☕</span>
+            <h1 class="font-serif-cozy text-xl font-semibold tracking-wide text-espresso">
+                Literary Cafe
+            </h1>
+        </div>
+
+        <nav class="space-y-2">
+
+            <a href="/"
+               class="flex items-center gap-3 px-3 py-2 bg-[#EADCC2] rounded-lg text-espresso font-medium transition-all">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="{% url 'lista_livros' %}"
+               class="flex items-center gap-3 px-3 py-2 hover:bg-[#EADCC2]/50 rounded-lg text-espresso/80 hover:text-espresso transition-all">
+                <span>📖</span>
+                Acervo
+            </a>
+
+            <a href="{% url 'criar_livro' %}"
+               class="flex items-center gap-3 px-3 py-2 hover:bg-[#EADCC2]/50 rounded-lg text-espresso/80 hover:text-espresso transition-all">
+                <span>✨</span>
+                Cadastrar Livro
+            </a>
+
+        </nav>
+
+    </div>
+
+    <div class="border-t border-[#E6DEC9] pt-4">
+
+        <div class="flex items-center gap-3 mb-4">
+
+            <div class="w-10 h-10 rounded-full bg-[#6F4E37] text-white flex items-center justify-center font-semibold">
+                {{ user.username|first|upper }}
+            </div>
+
+            <div>
+                <p class="text-sm font-medium text-espresso">
+                    {{ user.username }}
+                </p>
+
+                <p class="text-xs text-espresso/50">
+                    Bibliotecária
+                </p>
+            </div>
+
+        </div>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#EADCC2]/50 transition-all text-sm text-espresso/80">
+                🚪 Sair
+            </button>
+        </form>
+
+    </div>
+
+</aside>
+   
+
+    <main class="flex-1 p-6 md:p-12 max-w-5xl mx-auto w-full">
+        
+        <header class="border-b border-[#E6DEC9] pb-6 mb-8 text-center md:text-left">
+
+            <div class="inline-flex items-center justify-center w-14 h-14 bg-[#6F4E37]/10 rounded-xl text-[#2C1810] mb-3 transition-transform duration-300 hover:scale-110 hover:rotate-3 cursor-default group">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-7 h-7 transition-colors group-hover:text-[#6F4E37]">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                </svg>
+
+            </div>
+
+            <h2 class="font-serif-cozy text-3xl md:text-4xl font-bold text-espresso mb-2">
+                Olá, {{ user.username }} ☕
+            </h2>
+
+            <p class="text-espresso/70 text-sm md:text-base">
+                Bem-vinda de volta ao Literary Cafe.
+                Seu universo literário está esperando por você.
+            </p>
+
+        </header>
+
+        <section class="mb-10">
+
+            <h3 class="font-serif-cozy text-xl font-semibold mb-4 flex items-center gap-2">
+                <span>📈</span> Estatísticas do Acervo
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+
+                <!-- Total -->
+                <div class="bg-[#FDFBF7] border border-[#E6DEC9] rounded-xl p-6 shadow-sm">
+                    <span class="text-xs font-semibold tracking-wider text-espresso/50 uppercase">
+                        Total de Livros
+                    </span>
+
+                    <span class="font-serif-cozy text-4xl font-bold text-espresso mt-2 block">
+                        {{ total_livros }}
+                    </span>
+                </div>
+
+                <!-- Disponíveis -->
+                <div class="bg-[#FDFBF7] border border-[#E6DEC9] rounded-xl p-6 shadow-sm">
+                    <span class="text-xs font-semibold tracking-wider text-espresso/50 uppercase">
+                        Disponíveis
+                    </span>
+
+                    <span class="font-serif-cozy text-4xl font-bold text-emerald-800 mt-2 block">
+                        {{ disponiveis }}
+                    </span>
+                </div>
+
+                <!-- Emprestados -->
+                <div class="bg-[#FDFBF7] border border-[#E6DEC9] rounded-xl p-6 shadow-sm">
+                    <span class="text-xs font-semibold tracking-wider text-espresso/50 uppercase">
+                        Emprestados
+                    </span>
+
+                    <span class="font-serif-cozy text-4xl font-bold text-[#A0785A] mt-2 block">
+                        {{ indisponiveis }}
+                    </span>
+                </div>
+
+                <!-- Usuário -->
+                <div class="bg-[#FDFBF7] border border-[#E6DEC9] rounded-xl p-6 shadow-sm">
+
+                    <span class="text-xs uppercase text-espresso/50">
+                        Usuário
+                    </span>
+
+                    <h3 class="font-serif-cozy text-2xl mt-2">
+                        {{ user.username }}
+                    </h3>
+
+                    <p class="text-sm text-espresso/60 mt-1">
+                        Sessão ativa
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 class="font-serif-cozy text-xl font-semibold mb-4 flex items-center gap-2">
+                <span>⚡</span> Ações Rápidas
+            </h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="{% url 'lista_livros' %}" class="group flex items-center justify-between p-4 bg-[#6F4E37] text-white rounded-xl shadow-sm hover:bg-[#2C1810] transition-all">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl group-hover:scale-110 transition-transform">🔍</span>
+                        <div class="text-left">
+                            <span class="font-semibold block">Explorar Acervo</span>
+                            <span class="text-xs text-white/70">Visualize e busque por todos os livros</span>
+                        </div>
+                    </div>
+                    <span class="text-xl transition-transform group-hover:translate-x-1">→</span>
+                </a>
+
+                <a href="{% url 'criar_livro' %}" class="group flex items-center justify-between p-4 bg-[#F5DEB3] border border-[#D4A574] text-espresso rounded-xl shadow-sm hover:bg-[#D4A574]/30 transition-all">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl group-hover:scale-110 transition-transform">✨</span>
+                        <div class="text-left">
+                            <span class="font-semibold block text-espresso">Novo Registro</span>
+                            <span class="text-xs text-espresso/70">Adicione uma nova obra ao sistema</span>
+                        </div>
+                    </div>
+                    <span class="text-xl transition-transform group-hover:translate-x-1">→</span>
+                </a>
+            </div>
+        </section>
+
+        <footer class="mt-12 bg-[#F4EFE6] border border-[#E6DEC9] rounded-xl p-6 italic text-espresso/80 text-center relative overflow-hidden">
+            <div class="absolute -top-4 -left-2 text-7xl opacity-10 font-serif text-espresso">“</div>
+            <p class="font-serif-cozy text-base relative z-10">"Um livro é como um jardim carregado no bolso."</p>
+            <span class="text-xs block mt-2 text-espresso/60 not-italic">— Provérbio Árabe</span>
+        </footer>
+
+    </main>
+</body>
+</html>
